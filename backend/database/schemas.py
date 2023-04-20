@@ -1,6 +1,9 @@
+from datetime import datetime 
 from flask_marshmallow import Marshmallow
 from marshmallow import post_load, fields
-from database.models import User, Car
+from database.models import Favorite
+from database.models import User, Car, Review, Favorite
+from .models import Book, Favorite
 
 ma = Marshmallow()
 
@@ -59,3 +62,40 @@ cars_schema = CarSchema(many=True)
 
 
 # TODO: Add your schemas below
+
+class ReviewSchema(ma.Schema):
+    id = fields.Integer(dump_only=True)
+    book_id = fields.String(required=True)
+    text = fields.String(required=True)
+    rating = fields.Integer(required=True)
+    user = ma.Nested(UserSchema, many=False)
+    user_id = fields.Integer(required=True)
+    created_at = fields.DateTime(dump_only=True, default=datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ'))
+    class Meta:
+        model = Review
+        include_relationships = True
+        load_instance = True
+        fields = ("id", "book_id", "text", "rating", "user_id", "user")
+    
+    @post_load
+    def create_review(self, data, **kwargs):
+        return Review(**data)
+
+review_schema = ReviewSchema()
+reviews_schema = ReviewSchema(many=True)
+
+class FavoriteSchema(ma.Schema):
+    id = fields.Integer(dump_only=True)
+    book_id = fields.String(required=True)
+    title = fields.String(required=True)
+    thumbnail_url = fields.String(required=True)
+    user_id = fields.Integer(required=True)
+    user = ma.Nested(UserSchema, many=False)
+
+    @post_load
+    def create_favorite(self, data, **kwargs):
+        return Favorite(**data)
+    
+    class BookSchema(ma.SQLAlchemyAutoSchema):
+     class Meta:
+        model = Book

@@ -6,6 +6,7 @@ from flask_restful import Api
 from flask_migrate import Migrate
 from database.models import db
 from database.schemas import ma
+from resources.books import BookResource
 from resources.auth import LoginResource, RegisterResource
 from resources.cars import AllCarResource, UserCarResource
 from dotenv import load_dotenv
@@ -56,5 +57,5 @@ def create_routes():
     api.add_resource(AllCarResource, '/api/cars')
     api.add_resource(UserCarResource, '/api/user_cars')
     # TODO: Create files for your Resources in resources folder, add them here
-    
+    api.add_resource(BookResource, "/books", "/books/<int:book_id>")
     return api

@@ -4,13 +4,14 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 class User(db.Model):
+    __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
     first_name = db.Column(db.String(255), nullable=False)
     last_name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
-
+    reviews = db.relationship("Review", back_populates="user")
     def hash_password(self):
         self.password = generate_password_hash(self.password).decode('utf8')
 
@@ -31,3 +32,23 @@ class Car(db.Model):
     user = db.relationship("User")
 
 # TODO: Add your models below, remember to add a new migration and upgrade database
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(128), nullable=False)
+    author = db.Column(db.String(128), nullable=False)
+class Review(db.Model):
+    __tablename__ = "reviews"
+    id = db.Column(db.Integer, primary_key=True, index=True)
+    book_id = db.Column(db.String, db.ForeignKey("books.id"))
+    text = db.Column(db.String(255), nullable=False)
+    rating = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship("User", back_populates="reviews")
+
+class Favorite(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.String(255), nullable=False)
+    title = db.Column(db.String(255), nullable=False)
+    thumbnail_url = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User')
