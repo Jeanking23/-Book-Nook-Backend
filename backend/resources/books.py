@@ -1,9 +1,10 @@
-import dbm
 from flask import request
 from flask_restful import Resource, fields, marshal_with
 from database.models import db
 from database.models import Book
-
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from database.schemas import review_schema 
+from database.models import Review
 
 book_fields = {
     "id": fields.Integer,
@@ -39,3 +40,14 @@ class BookResource(Resource):
         db.session.delete(book)
         db.session.commit()
         return {"message": "Book deleted"}, 204
+
+class ReviewResource(Resource):
+    @jwt_required()
+    def post(self):
+        user_id = get_jwt_identity()
+        form_data = request.get_json()
+        new_review = review_schema.load(form_data)
+        new_review.user_id = user_id
+        db.session.add(new_review)
+        db.session.commit()
+        return review_schema.dump(new_review), 201

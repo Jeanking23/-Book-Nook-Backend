@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from flask_migrate import Migrate
+from resources.books import ReviewResource
 from database.models import db
 from database.schemas import ma
 from resources.books import BookResource
@@ -57,5 +58,8 @@ def create_routes():
     api.add_resource(AllCarResource, '/api/cars')
     api.add_resource(UserCarResource, '/api/user_cars')
     # TODO: Create files for your Resources in resources folder, add them here
-    api.add_resource(BookResource, "/books", "/books/<int:book_id>")
+    api.add_resource(BookResource, '/api/books/<int:book_id>')
+    api.add_resource(ReviewResource, '/api/books/reviews')
+    
+    
     return api
