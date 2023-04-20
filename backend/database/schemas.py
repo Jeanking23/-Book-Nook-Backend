@@ -95,7 +95,9 @@ class FavoriteSchema(ma.Schema):
     @post_load
     def create_favorite(self, data, **kwargs):
         return Favorite(**data)
-    
-    class BookSchema(ma.SQLAlchemyAutoSchema):
+
+favorite_schema = FavoriteSchema()
+favorite_schema = FavoriteSchema(many=True)
+class BookSchema(ma.SQLAlchemyAutoSchema):
      class Meta:
         model = Book
