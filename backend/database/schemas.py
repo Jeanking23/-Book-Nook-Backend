@@ -98,6 +98,8 @@ class FavoriteSchema(ma.Schema):
 
 favorite_schema = FavoriteSchema()
 favorite_schema = FavoriteSchema(many=True)
-class BookSchema(ma.SQLAlchemyAutoSchema):
+class Book_Schema(ma.SQLAlchemyAutoSchema):
      class Meta:
         model = Book
+        
+book_schema = Book_Schema()

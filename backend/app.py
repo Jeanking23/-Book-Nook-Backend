@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from flask_migrate import Migrate
+from resources.books import GetBookInformation
 from resources.books import UserFavorites
 from resources.books import ReviewResource
 from database.models import db
@@ -61,6 +62,8 @@ def create_routes():
 
     api.add_resource(ReviewResource, '/api/books/reviews')
     api.add_resource(UserFavorites, '/api/books/favorites')
+    api.add_resource(GetBookInformation, '/api/books/book_information')
+
     
     
     return api
