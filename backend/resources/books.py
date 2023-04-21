@@ -63,3 +63,27 @@ class GetBookInformation(Resource):
         }
 
          return response, 200
+     
+class ReviewDetailResource(Resource):
+            @jwt_required()
+            def put(self, review_id):
+                user_id = get_jwt_identity()
+                form_data = request.get_json()
+                review = Review.query.filter_by(id=review_id, user_id=user_id).first()
+                if review:
+                    updated_review = review_schema.load(form_data, instance=review)
+                    db.session.commit()
+                    return review_schema.dump(updated_review), 200
+                else:
+                    return {'message': 'Review not found or unauthorized to update'}, 404
+
+            @jwt_required()
+            def delete(self, review_id):
+                user_id = get_jwt_identity()
+                review = Review.query.filter_by(id=review_id, user_id=user_id).first()
+                if review:
+                    db.session.delete(review)
+                    db.session.commit()
+                    return '', 204
+                else:
+                    return {'message': 'Review not found or unauthorized to delete'}, 404

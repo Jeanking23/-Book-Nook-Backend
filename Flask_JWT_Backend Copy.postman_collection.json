@@ -339,6 +339,52 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Review Detail Resource",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:5000/api/books/book_information",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"books",
+								"book_information"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Review Detail Resource",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:5000/api/books/review_detail",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"books",
+								"review_detail"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

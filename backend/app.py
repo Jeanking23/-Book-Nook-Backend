@@ -7,6 +7,7 @@ from flask_migrate import Migrate
 from resources.books import GetBookInformation
 from resources.books import UserFavorites
 from resources.books import ReviewResource
+from resources.books import ReviewDetailResource
 from database.models import db
 from database.schemas import ma
 from resources.auth import LoginResource, RegisterResource
@@ -63,7 +64,6 @@ def create_routes():
     api.add_resource(ReviewResource, '/api/books/reviews')
     api.add_resource(UserFavorites, '/api/books/favorites')
     api.add_resource(GetBookInformation, '/api/books/book_information')
+    api.add_resource(ReviewDetailResource, '/api/books/review_detail')
 
-    
-    
     return api
